@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 10:33:20 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/24 10:38:35 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/24 10:55:54 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,13 @@ static int	ctx_parse_flag(t_ctx *ctx, char *flags)
 
 static int	ctx_add_argument(t_ctx *ctx, char *av)
 {
-	(void)ctx;
-	(void)av;
+	t_list	*new = ft_lstnew(av);
+	if (!new)
+	{
+		ft_lstclear(&ctx->args, empty_del);
+		return (0);
+	}
+	ft_lstadd_back(&ctx->args, new);
 	return (1);
 }
 

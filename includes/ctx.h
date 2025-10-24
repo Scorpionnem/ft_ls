@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:54:55 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/24 10:35:46 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/24 10:55:37 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,13 @@ typedef struct s_flags
 typedef struct s_ctx
 {
 	t_flags	flags;
+	t_list	*args;
 }	t_ctx;
 
 int		ctx_init(t_ctx *ctx, char **av);
 
 int		ctx_parse_args(t_ctx *ctx, char **av);
+void	empty_del(void *ptr);
 
 int		ctx_delete(t_ctx *ctx);
 

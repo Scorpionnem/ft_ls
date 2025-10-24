@@ -6,11 +6,16 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 09:00:21 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/24 10:38:46 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/24 10:59:04 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ctx.h"
+
+void	empty_del(void *ptr)
+{
+	(void)ptr;
+}
 
 int		ctx_init(t_ctx *ctx, char **av)
 {
@@ -22,6 +27,6 @@ int		ctx_init(t_ctx *ctx, char **av)
 
 int		ctx_delete(t_ctx *ctx)
 {
-	(void)ctx;
+	ft_lstclear(&ctx->args, empty_del);
 	return (EXIT_SUCCESS);
 }
