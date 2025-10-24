@@ -6,27 +6,19 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:44:15 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/24 15:56:07 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/24 16:14:58 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ctx.h"
-
-/*
-
-	directory ->
-		array of files
-		sub_directory (direco)
-
-*/
 
 int	get_files(t_ctx *ctx, t_directory **cur_dir)
 {
 	DIR				*dir;
 	struct dirent	*dirent;
 	t_file			*new;
+	t_directory		*new_dir;
 
-	(void)ctx;
 	dirent = NULL;
 	dir = opendir((*cur_dir)->path);
 	if (!dir)
@@ -42,8 +34,6 @@ int	get_files(t_ctx *ctx, t_directory **cur_dir)
 			files_add_back(&(*cur_dir)->files, new);
 			if (ctx->flags.R_flag && new->is_directory && new->name[0] != '.')
 			{
-				t_directory	*new_dir;
-
 				new_dir = malloc(sizeof(t_directory));
 				new_dir->files = NULL;
 				new_dir->path = ft_strjoin(ft_strjoin((*cur_dir)->path, "/"), new->name);
@@ -56,26 +46,40 @@ int	get_files(t_ctx *ctx, t_directory **cur_dir)
 	return (1);
 }
 
-void	print_files(t_directory *dir)
+void	print_dirs(t_ctx *ctx, t_directory *dir)
 {
 	t_file	*tmp;
 
-	if (!dir || !dir->files)
-		return ;
-	tmp = dir->files;
-	printf("%s/:\n", dir->path);
-	while (tmp)
-	{
-		printf("  %s\n", tmp->name);
-		tmp = tmp->next;
-	}
 	tmp = dir->files;
 	while (tmp)
 	{
-		if (tmp->is_directory)
-			print_files(tmp->dir);
+		if (tmp->is_directory && tmp->dir)
+		{
+			printf("\n");
+			print_files(ctx, tmp->dir);
+		}
 		tmp = tmp->next;
 	}
+}
+
+void	print_files(t_ctx *ctx, t_directory *dir)
+{
+	t_file	*tmp;
+
+	tmp = dir->files;
+	printf("%s:\n", dir->path);
+	while (tmp)
+	{
+		if (!ctx->flags.a_flag && tmp->name[0] == '.')
+		{
+			tmp = tmp->next;
+			continue ;
+		}
+		printf("%s ", tmp->name);
+		tmp = tmp->next;
+	}
+	printf("\n");
+	print_dirs(ctx, dir);
 }
 
 int	list_files(t_ctx *ctx, char *path)
@@ -85,10 +89,10 @@ int	list_files(t_ctx *ctx, char *path)
 	dir = malloc(sizeof(t_directory));
 	dir->files = NULL;
 	dir->path = path;
-	
+
 	if (!get_files(ctx, &dir))
 		return (0);
-	print_files(dir);
+	print_files(ctx, dir);
 	return (1);
 }
 

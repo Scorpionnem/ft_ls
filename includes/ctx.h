@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:54:55 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/24 15:44:52 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/24 16:03:06 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,7 @@ void	empty_del(void *ptr);
 int		ctx_delete(t_ctx *ctx);
 
 void	*error(char *str);
+
+void	print_files(t_ctx *ctx, t_directory *dir);
 
 #endif
