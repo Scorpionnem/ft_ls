@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 10:33:20 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/24 10:55:54 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/24 11:27:49 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,16 @@
 
 static void	ctx_set_flag(t_ctx *ctx, char flag)
 {
-	ctx->flags.l_flag = flag == 'l';
-	ctx->flags.R_flag = flag == 'R';
-	ctx->flags.a_flag = flag == 'a';
-	ctx->flags.r_flag = flag == 'r';
-	ctx->flags.t_flag = flag == 't';
+	if (flag == 'l')
+		ctx->flags.l_flag = true;
+	if (flag == 'R')
+		ctx->flags.R_flag = true;
+	if (flag == 'a')
+		ctx->flags.a_flag = true;
+	if (flag == 'r')
+		ctx->flags.r_flag = true;
+	if (flag == 't')
+		ctx->flags.t_flag = true;
 }
 
 static int	ctx_parse_flag(t_ctx *ctx, char *flags)
