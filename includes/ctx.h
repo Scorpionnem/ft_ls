@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:54:55 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/24 10:55:37 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/24 15:44:52 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,34 @@ typedef struct s_flags
 	bool	r_flag;
 }	t_flags;
 
+typedef struct s_file
+{
+	char	*name;
+	char	*path;
+
+	bool				is_directory;
+	struct s_directory	*dir;
+
+	struct s_file	*next;
+	struct s_file	*sub_dir;
+}	t_file;
+
+typedef struct	s_directory
+{
+	t_file	*files;
+	char	*path;
+}	t_directory;
+
+t_file	*files_last(t_file *lst);
+void	files_add_back(t_file **lst, t_file *new);
+int		files_size(t_file *lst);
+t_file	*files_new(char *name, char *path, bool isdir);
+
 typedef struct s_ctx
 {
 	t_flags	flags;
 	t_list	*args;
+	t_file	*files;
 }	t_ctx;
 
 int		ctx_init(t_ctx *ctx, char **av);

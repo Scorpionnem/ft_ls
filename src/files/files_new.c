@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   files_new.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/09 11:10:50 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/24 15:32:26 by mbatty           ###   ########.fr       */
+/*   Created: 2025/10/24 15:03:14 by mbatty            #+#    #+#             */
+/*   Updated: 2025/10/24 15:44:11 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ctx.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+t_file	*files_new(char *name, char *path, bool isdir)
 {
-	char	*str;
+	t_file	*new_node;
 
-	if (nmemb < 1 || size < 1)
-	{
-		nmemb = 0;
-		size = 0;
-	}
-	str = malloc(nmemb * size);
-	if (str == NULL)
+	new_node = malloc(sizeof(t_file));
+	if (!new_node)
 		return (NULL);
-	ft_bzero(str, nmemb * size);
-	return (str);
+	new_node->name = name;
+	new_node->path = path;
+	new_node->is_directory = isdir;
+	new_node->next = NULL;
+	new_node->sub_dir = NULL;
+	new_node->dir = NULL;
+	return (new_node);
 }

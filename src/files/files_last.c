@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   files_last.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/09 11:10:50 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/24 15:32:26 by mbatty           ###   ########.fr       */
+/*   Created: 2024/10/12 10:59:38 by mbatty            #+#    #+#             */
+/*   Updated: 2025/10/24 15:03:23 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ctx.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+t_file	*files_last(t_file *lst)
 {
-	char	*str;
+	int	count;
 
-	if (nmemb < 1 || size < 1)
+	count = files_size(lst);
+	while (count > 1)
 	{
-		nmemb = 0;
-		size = 0;
+		lst = lst->next;
+		count--;
 	}
-	str = malloc(nmemb * size);
-	if (str == NULL)
-		return (NULL);
-	ft_bzero(str, nmemb * size);
-	return (str);
+	return (lst);
 }

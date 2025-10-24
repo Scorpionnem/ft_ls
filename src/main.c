@@ -6,93 +6,89 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:44:15 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/24 14:15:35 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/24 15:56:07 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ctx.h"
 
-void	list_recursively(char *name)
+/*
+
+	directory ->
+		array of files
+		sub_directory (direco)
+
+*/
+
+int	get_files(t_ctx *ctx, t_directory **cur_dir)
 {
-	printf("\n%s:\n", name);
-	DIR	*dir = opendir(name);
-	if (!dir)
-		return ;
-	struct dirent	*dirent = NULL;
-	do
-	{
-		dirent = readdir(dir);
-		if (dirent && dirent->d_name[0] != '.')
-			printf("	%s\n", dirent->d_name);
-	}
-	while (dirent);
-	
-	dir = opendir(name);
-	if (!dir)
-		return ;
-	dirent = NULL;
-	do
-	{
-		dirent = readdir(dir);
-		if (dirent && dirent->d_name[0] != '.')
-			if (dirent->d_type == 4)
-				list_recursively(ft_strjoin(ft_strjoin(name, "/"), dirent->d_name));
-	}
-	while (dirent);
-}
-
-void	print_dirent(t_ctx *ctx, struct dirent *dirent, char *path)
-{
-	if (!dirent)
-		return ;
-
-	if (dirent->d_name[0] == '.' && !ctx->flags.a_flag)
-		return ;
-
-	struct stat	file_stat;
-
-	if (stat(path, &file_stat) == -1)
-		return perror("1");
-
-	char	*time_string = ctime(&file_stat.st_ctime);
-	time_string[16] = 0;
-
-	struct passwd *passwd = getpwuid(file_stat.st_uid);
-	if (!passwd)
-		return perror("2");
-	struct group *group = getgrgid(file_stat.st_gid);
-	if (!group)
-		return perror("3");
-
-	if (ctx->flags.l_flag)
-		printf("%lu %s %s %ld	%s %s\n", file_stat.st_nlink, passwd->pw_name, group->gr_name, file_stat.st_size, time_string, dirent->d_name);
-	else
-		printf("%s\n", dirent->d_name);
-}
-
-int	list_files(t_ctx *ctx, char *origin_path)
-{
-	DIR	*dir;
+	DIR				*dir;
 	struct dirent	*dirent;
-	
-	dir = opendir(origin_path);
-	if (!dir)
-	{
-		perror("ls: cannot access ''");
-		return (0);
-	}
+	t_file			*new;
 
+	(void)ctx;
 	dirent = NULL;
+	dir = opendir((*cur_dir)->path);
+	if (!dir)
+		return (0);
 	do
 	{
 		dirent = readdir(dir);
 		if (dirent)
 		{
-			print_dirent(ctx, dirent, ft_strjoin(ft_strjoin(origin_path, "/"), dirent->d_name));
+			new = files_new(dirent->d_name, (*cur_dir)->path, dirent->d_type == 4);
+			if (!new)
+				return (0);
+			files_add_back(&(*cur_dir)->files, new);
+			if (ctx->flags.R_flag && new->is_directory && new->name[0] != '.')
+			{
+				t_directory	*new_dir;
+
+				new_dir = malloc(sizeof(t_directory));
+				new_dir->files = NULL;
+				new_dir->path = ft_strjoin(ft_strjoin((*cur_dir)->path, "/"), new->name);
+				new->dir = new_dir;
+				get_files(ctx, &new_dir);
+			}
 		}
 	}
 	while (dirent);
-	closedir(dir);
+	return (1);
+}
+
+void	print_files(t_directory *dir)
+{
+	t_file	*tmp;
+
+	if (!dir || !dir->files)
+		return ;
+	tmp = dir->files;
+	printf("%s/:\n", dir->path);
+	while (tmp)
+	{
+		printf("  %s\n", tmp->name);
+		tmp = tmp->next;
+	}
+	tmp = dir->files;
+	while (tmp)
+	{
+		if (tmp->is_directory)
+			print_files(tmp->dir);
+		tmp = tmp->next;
+	}
+}
+
+int	list_files(t_ctx *ctx, char *path)
+{
+	t_directory	*dir;
+
+	dir = malloc(sizeof(t_directory));
+	dir->files = NULL;
+	dir->path = path;
+	
+	if (!get_files(ctx, &dir))
+		return (0);
+	print_files(dir);
 	return (1);
 }
 
