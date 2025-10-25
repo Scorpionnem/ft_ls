@@ -6,93 +6,81 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:44:15 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/24 16:14:58 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/25 11:07:42 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ctx.h"
 
-int	get_files(t_ctx *ctx, t_directory **cur_dir)
+int	get_files(t_ctx *ctx, t_file *parent, t_file **parent_dir)
 {
 	DIR				*dir;
 	struct dirent	*dirent;
 	t_file			*new;
-	t_directory		*new_dir;
 
 	dirent = NULL;
-	dir = opendir((*cur_dir)->path);
+	dir = opendir(parent->path);
 	if (!dir)
+	{
+		if (errno == ENOTDIR)
+			return (1);
+		perror("");
 		return (0);
+	}
+
 	do
 	{
 		dirent = readdir(dir);
-		if (dirent)
+		if (dirent && dirent->d_name[0] != '.')
 		{
-			new = files_new(dirent->d_name, (*cur_dir)->path, dirent->d_type == 4);
-			if (!new)
-				return (0);
-			files_add_back(&(*cur_dir)->files, new);
-			if (ctx->flags.R_flag && new->is_directory && new->name[0] != '.')
-			{
-				new_dir = malloc(sizeof(t_directory));
-				new_dir->files = NULL;
-				new_dir->path = ft_strjoin(ft_strjoin((*cur_dir)->path, "/"), new->name);
-				new->dir = new_dir;
-				get_files(ctx, &new_dir);
-			}
+			new = files_new(dirent->d_name, parent->path);
+			if (ctx->flags.R_flag && new->is_dir)
+				get_files(ctx, new, &new->dir);
+			files_add_back(parent_dir, new);
 		}
 	}
 	while (dirent);
+	closedir(dir);
 	return (1);
 }
 
-void	print_dirs(t_ctx *ctx, t_directory *dir)
+void	print_files(t_ctx *ctx, t_file *file)
 {
-	t_file	*tmp;
+	t_file	*tmp = file->dir;
 
-	tmp = dir->files;
-	while (tmp)
+	if (!file->is_dir)
+		printf("%s\n", file->name);
+	else
 	{
-		if (tmp->is_directory && tmp->dir)
+		printf("%s:\n", file->path);
+		file = file->dir;
+		while (file)
 		{
-			printf("\n");
-			print_files(ctx, tmp->dir);
+			printf("  %s\n", file->name);
+			file = file->next;
 		}
-		tmp = tmp->next;
-	}
-}
 
-void	print_files(t_ctx *ctx, t_directory *dir)
-{
-	t_file	*tmp;
-
-	tmp = dir->files;
-	printf("%s:\n", dir->path);
-	while (tmp)
-	{
-		if (!ctx->flags.a_flag && tmp->name[0] == '.')
+		if (ctx->flags.R_flag)
 		{
-			tmp = tmp->next;
-			continue ;
+			while (tmp)
+			{
+				if (tmp->is_dir)
+					print_files(ctx, tmp);
+				tmp = tmp->next;
+			}
 		}
-		printf("%s ", tmp->name);
-		tmp = tmp->next;
 	}
-	printf("\n");
-	print_dirs(ctx, dir);
 }
 
 int	list_files(t_ctx *ctx, char *path)
 {
-	t_directory	*dir;
-
-	dir = malloc(sizeof(t_directory));
-	dir->files = NULL;
-	dir->path = path;
-
-	if (!get_files(ctx, &dir))
+	t_file	*file = files_new(path, NULL);
+	if (!file)
 		return (0);
-	print_files(ctx, dir);
+	if (!get_files(ctx, file, &file->dir))
+		return (0);
+
+	print_files(ctx, file);
 	return (1);
 }
 

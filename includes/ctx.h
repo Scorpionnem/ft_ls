@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:54:55 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/24 16:03:06 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/25 10:30:39 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,21 @@ typedef struct s_file
 	char	*name;
 	char	*path;
 
-	bool				is_directory;
-	struct s_directory	*dir;
+	bool			is_dir;
+	struct s_file	*dir;
 
 	struct s_file	*next;
-	struct s_file	*sub_dir;
 }	t_file;
 
-typedef struct	s_directory
-{
-	t_file	*files;
-	char	*path;
-}	t_directory;
+// typedef struct	s_directory
+// {
+// 	t_file	*files;
+// }	t_directory;
 
 t_file	*files_last(t_file *lst);
 void	files_add_back(t_file **lst, t_file *new);
 int		files_size(t_file *lst);
-t_file	*files_new(char *name, char *path, bool isdir);
+t_file	*files_new(char *name, char *parent_path);
 
 typedef struct s_ctx
 {
@@ -77,7 +75,5 @@ void	empty_del(void *ptr);
 int		ctx_delete(t_ctx *ctx);
 
 void	*error(char *str);
-
-void	print_files(t_ctx *ctx, t_directory *dir);
 
 #endif
