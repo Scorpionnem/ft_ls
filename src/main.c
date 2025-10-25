@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:44:15 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/25 11:58:55 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/25 14:32:22 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,17 @@ void	print_file(t_ctx *ctx, t_file *file)
 		struct stat	file_stat;
 
 		if (stat(file->path, &file_stat) == -1)
-			return perror("1");
+			return perror("ft_ls");
 
 		char	*time_string = ctime(&file_stat.st_ctime);
 		time_string[16] = 0;
 
 		struct passwd *passwd = getpwuid(file_stat.st_uid);
 		if (!passwd)
-			return perror("2");
+			return perror("ft_ls");
 		struct group *group = getgrgid(file_stat.st_gid);
 		if (!group)
-			return perror("3");
+			return perror("ft_ls");
 
 		printf("%lu %s %s %ld	%s %s\n", file_stat.st_nlink, passwd->pw_name, group->gr_name, file_stat.st_size, time_string, file->name);
 	}

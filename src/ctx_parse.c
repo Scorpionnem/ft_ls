@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 10:33:20 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/24 11:27:49 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/25 13:42:38 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,29 @@ static int	ctx_add_argument(t_ctx *ctx, char *av)
 
 int	ctx_parse_args(t_ctx *ctx, char **av)
 {
-	int	i;
+	int		i;
+	t_list	*tmp;
 
 	i = -1;
 	while (av[++i])
 	{
-		if (av[i][0] == '-')
+		if (av[i][0] == '-' && av[i][1])
 		{
 			if (!ctx_parse_flag(ctx, ++av[i]))
 				return (0);
 		}
 		else
 			ctx_add_argument(ctx, av[i]);
+	}
+	if (ft_lstsize(ctx->args) <= 0)
+	{
+		tmp = ft_lstnew(".");
+		if (!tmp)
+		{
+			ft_lstclear(&ctx->args, empty_del);
+			return (0);
+		}
+		ft_lstadd_back(&ctx->args, tmp);
 	}
 	return (1);	
 }

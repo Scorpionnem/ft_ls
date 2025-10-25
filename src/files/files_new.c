@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 15:03:14 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/25 12:02:37 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/25 13:43:43 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ t_file	*files_new(char *name, char *parent_path)
 	new_node->path = get_path(name, parent_path);
 
 	if (lstat(new_node->path, &file_stat) == -1)
+	{
+		perror("ft_ls");
 		return (0);
+	}
 
 	new_node->is_hidden = new_node->name[0] == '.';
 
