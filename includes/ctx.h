@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:54:55 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/25 10:30:39 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/25 11:58:46 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_file
 	char	*name;
 	char	*path;
 
+	bool			is_hidden;
 	bool			is_dir;
 	struct s_file	*dir;
 
@@ -59,6 +60,7 @@ t_file	*files_last(t_file *lst);
 void	files_add_back(t_file **lst, t_file *new);
 int		files_size(t_file *lst);
 t_file	*files_new(char *name, char *parent_path);
+void	files_free(t_file *lst);
 
 typedef struct s_ctx
 {
