@@ -6,18 +6,15 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:44:15 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/27 10:29:40 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/27 14:05:13 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ctx.h"
 
-int	list_files(t_ctx *ctx, char *path)
+int	list_files_pipeline(t_ctx *ctx, t_file *file)
 {
-	t_file	*file = files_new(path, NULL);
-	if (!file)
-		return (0);
-	if (!get_files(ctx, file, &file->dir))
+	if (!get_files(file, &file->dir))
 		return (0);
 		
 	if (!ctx->flags.t_flag)
@@ -26,6 +23,28 @@ int	list_files(t_ctx *ctx, char *path)
 		sort_files_time(&file, ctx->flags.r_flag);
 
 	print_files(ctx, file);
+
+	t_file	*tmp = file->dir;
+	while (tmp)
+	{
+		if (ctx->flags.R_flag && tmp->is_dir && should_access_dir(tmp->name))
+		{
+			printf("\n");
+			list_files_pipeline(ctx, tmp);
+		}
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
+int	list_files(t_ctx *ctx, char *path)
+{
+	t_file	*file = files_new(path, NULL);
+	if (!file)
+		return (0);
+
+	list_files_pipeline(ctx, file);
+
 	files_free(file);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:52 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/27 09:43:14 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/27 14:02:50 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ void	print_files(t_ctx *ctx, t_file *file)
 		{
 			if (tmp->is_dir && (!tmp->is_hidden || (ctx->flags.a_flag && should_access_dir(tmp->name))))
 			{
-				printf("\n");
-				print_files(ctx, tmp);
+				// printf("\n");
+				// print_files(ctx, tmp);
 			}
 			tmp = tmp->next;
 		}

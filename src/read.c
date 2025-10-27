@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:31:38 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/27 09:40:36 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/27 14:04:25 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	should_access_dir(const char *name)
 	return (true);
 }
 
-int	get_files(t_ctx *ctx, t_file *parent, t_file **parent_dir)
+int	get_files(t_file *parent, t_file **parent_dir)
 {
 	DIR				*dir;
 	struct dirent	*dirent;
@@ -41,8 +41,6 @@ int	get_files(t_ctx *ctx, t_file *parent, t_file **parent_dir)
 		if (dirent)
 		{
 			new = files_new(dirent->d_name, parent->path);
-			if (ctx->flags.R_flag && new->is_dir && should_access_dir(new->name))
-				get_files(ctx, new, &new->dir);
 			files_add_back(parent_dir, new);
 		}
 	}
