@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:44:15 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/27 09:46:19 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/27 10:29:40 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ int	list_files(t_ctx *ctx, char *path)
 		return (0);
 	if (!get_files(ctx, file, &file->dir))
 		return (0);
-
-	sort_files_name(&file);
+		
+	if (!ctx->flags.t_flag)
+		sort_files_name(&file, ctx->flags.r_flag);
+	else
+		sort_files_time(&file, ctx->flags.r_flag);
 
 	print_files(ctx, file);
 	files_free(file);

@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:37 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/27 10:08:18 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/27 10:29:11 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	swap_files(t_file *file1, t_file *file2)
 	file2->dir = tmp_dir;
 }
 
-int	sort_files_name(t_file **files)
+int	sort_files_name(t_file **files, bool reverse)
 {
 	t_file	*first = (*files)->dir;
 	t_file	*tmp = first;
@@ -43,13 +43,35 @@ int	sort_files_name(t_file **files)
 	while (tmp)
 	{
 		if (tmp->next)
-			if (ft_strcmp(tmp->name, tmp->next->name) > 0)
+			if ((!reverse && ft_strcmp(tmp->name, tmp->next->name) > 0) || (reverse && ft_strcmp(tmp->name, tmp->next->name) < 0))
 			{
 				swap_files(tmp, tmp->next);
 				tmp = first;
 			}
 		if (tmp->is_dir)
-			sort_files_name(&tmp);
+			sort_files_name(&tmp, reverse);
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
+int	sort_files_time(t_file **files, bool reverse)
+{
+	t_file	*first = (*files)->dir;
+	t_file	*tmp = first;
+
+	if (!tmp)
+		return (1);
+	while (tmp)
+	{
+		if (tmp->next)
+			if ((!reverse && ft_strcmp(tmp->name, tmp->next->name) > 0) || (reverse && ft_strcmp(tmp->name, tmp->next->name) < 0))
+			{
+				swap_files(tmp, tmp->next);
+				tmp = first;
+			}
+		if (tmp->is_dir)
+			sort_files_name(&tmp, reverse);
 		tmp = tmp->next;
 	}
 	return (1);
