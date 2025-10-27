@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:44:15 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/27 14:05:13 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/27 17:57:51 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ int	list_files_pipeline(t_ctx *ctx, t_file *file)
 	t_file	*tmp = file->dir;
 	while (tmp)
 	{
-		if (ctx->flags.R_flag && tmp->is_dir && should_access_dir(tmp->name))
+		if (ctx->flags.R_flag && tmp->is_dir && should_access_dir(tmp->name)
+			&& ((ctx->flags.a_flag && tmp->is_hidden) || !tmp->is_hidden))
 		{
-			printf("\n");
+			ft_putendl_fd("", 1);
 			list_files_pipeline(ctx, tmp);
 		}
 		tmp = tmp->next;
