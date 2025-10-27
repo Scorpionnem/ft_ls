@@ -13,7 +13,10 @@ SRCS =	src/main.c\
 		src/files/files_last.c\
 		src/files/files_new.c\
 		src/files/files_size.c\
-		src/files/files_free.c
+		src/files/files_free.c\
+		src/read.c\
+		src/sort.c\
+		src/display.c
 
 OBJDIR = obj
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)

@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:54:55 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/25 11:58:46 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/27 09:45:59 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,15 @@ typedef struct s_ctx
 
 int		ctx_init(t_ctx *ctx, char **av);
 
+int		get_files(t_ctx *ctx, t_file *parent, t_file **parent_dir);
+bool	should_access_dir(const char *name);
+
+void	print_files(t_ctx *ctx, t_file *file);
+
 int		ctx_parse_args(t_ctx *ctx, char **av);
 void	empty_del(void *ptr);
+
+int		sort_files_name(t_file **files);
 
 int		ctx_delete(t_ctx *ctx);
 
