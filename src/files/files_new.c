@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 15:03:14 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/25 13:43:43 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 16:21:09 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ t_file	*files_new(char *name, char *parent_path)
 
 	if (lstat(new_node->path, &file_stat) == -1)
 	{
+		free(new_node->name);
+		free(new_node->path);
+		free(new_node);
 		perror("ft_ls");
 		return (0);
 	}

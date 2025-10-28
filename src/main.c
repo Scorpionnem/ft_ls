@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:44:15 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 14:31:50 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 16:19:50 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ int	list_files(t_ctx *ctx, char *path)
 	if (!file)
 		return (0);
 	if (!list_files_pipeline(ctx, file))
+	{
+		files_free(file);
 		return (0);
+	}
 	files_free(file);
 	return (1);
 }
