@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:37 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 13:31:13 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 13:42:46 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ int	sort_files_time(t_file **files, bool reverse)
 {
 	t_file	*first = (*files)->dir;
 	t_file	*tmp = first;
+	struct stat	file_stat1;
+	struct stat	file_stat2;
+	struct timespec t1;
+	struct timespec t2;
 
 	if (!tmp)
 		return (1);
@@ -71,17 +75,12 @@ int	sort_files_time(t_file **files, bool reverse)
 			sort_files_time(&tmp, reverse);
 		if (tmp->next)
 		{
-			struct stat	file_stat1;
-			struct stat	file_stat2;
-
 			if (stat(tmp->path, &file_stat1) == -1)
-				return (perror("ft_ls"), 1);
+				return (perror("ft_ls"), 0);
 			if (stat(tmp->next->path, &file_stat2) == -1)
-				return (perror("ft_ls"), 1);
-
-			struct timespec t1 = file_stat1.st_mtim;
-			struct timespec t2 = file_stat2.st_mtim;
-
+				return (perror("ft_ls"), 0);
+			t1 = file_stat1.st_mtim;
+			t2 = file_stat2.st_mtim;
 			if ((!reverse && (t1.tv_sec < t2.tv_sec || (t1.tv_sec == t2.tv_sec && t1.tv_nsec < t2.tv_nsec) || (t1.tv_sec == t2.tv_sec && t1.tv_nsec == t2.tv_nsec && ft_strcmp(tmp->name, tmp->next->name) > 0))) || (reverse && (t1.tv_sec > t2.tv_sec || (t1.tv_sec == t2.tv_sec && t1.tv_nsec > t2.tv_nsec) || (t1.tv_sec == t2.tv_sec && t1.tv_nsec == t2.tv_nsec && ft_strcmp(tmp->name, tmp->next->name) > 0))))
 			{
 				swap_files(tmp, tmp->next);
