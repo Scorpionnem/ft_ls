@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:52 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 14:21:16 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 14:38:13 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ static void	print_file_long(t_file *file)
 
 static bool	has_visible_after(t_ctx *ctx, t_file *file)
 {
+	if (!file)
+		return (false);
 	file = file->next;
 	while (file)
 	{
@@ -123,21 +125,14 @@ static bool	has_visible_after(t_ctx *ctx, t_file *file)
 static void	print_file(t_ctx *ctx, t_file *file)
 {
 	bool	space = has_visible_after(ctx, file);
-	bool	newline = !file->next;
 
 	if (file->is_hidden && !ctx->flags.a_flag)
-	{
-		if (newline)
-			ft_putchar_fd('\n', 1);
 		return ;
-	}
 	if (!ctx->flags.l_flag)
 	{
 		ft_putstr_fd(file->name, 1);
 		if (space)
 			ft_putchar_fd(' ', 1);
-		else if (newline)
-			ft_putchar_fd('\n', 1);
 	}
 	else
 		print_file_long(file);
@@ -170,8 +165,13 @@ static void	print_total_size(t_ctx *ctx, t_file *file)
 
 void	print_files(t_ctx *ctx, t_file *file)
 {
+	t_file	*dir = file->dir;
 	if (!file->is_dir)
-		return print_file(ctx, file);
+	{
+		print_file(ctx, file);
+		ft_putchar_fd('\n', 1);	
+		return ;
+	}
 
 	if (ctx->flags.R_flag || ctx->mult_args)
 	{
@@ -186,4 +186,6 @@ void	print_files(t_ctx *ctx, t_file *file)
 		print_file(ctx, file);
 		file = file->next;
 	}
+	if (has_visible_after(ctx, dir))
+		ft_putchar_fd('\n', 1);
 }

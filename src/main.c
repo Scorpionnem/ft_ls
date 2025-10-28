@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:44:15 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 14:22:36 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 14:31:50 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	list_files_pipeline(t_ctx *ctx, t_file *file)
 	t_file	*tmp;
 
 	if (!get_files(file, &file->dir))
-		return (0);
+		return (1);
 	if (!ctx->flags.t_flag)
 		sort_files_name(&file, ctx->flags.r_flag);
 	else
