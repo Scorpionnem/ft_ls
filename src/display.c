@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:52 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 13:35:56 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 13:55:19 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ static void	print_file_long(t_file *file)
 static void	print_file(t_ctx *ctx, t_file *file)
 {
 	bool	space = file->next && (!file->next->is_hidden || (file->next->is_hidden && ctx->flags.a_flag));
-	bool	newline = !file->next;
+	bool	newline = !file->next && (!file->is_hidden || (file->is_hidden && ctx->flags.a_flag));
 
 	if (file->is_hidden && !ctx->flags.a_flag)
 	{
