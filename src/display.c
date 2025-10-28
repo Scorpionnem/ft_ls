@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:52 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 09:44:21 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 12:42:00 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,31 @@ static void	print_file(t_ctx *ctx, t_file *file)
 		print_file_long(ctx, file);
 }
 
+static void	print_total_size(t_ctx *ctx, t_file *file)
+{
+	struct stat	file_stat;
+	int	total = 0;
+
+	file = file->dir;
+	while (file)
+	{
+		if (!ctx->flags.a_flag && file->is_hidden)
+		{
+			file = file->next;
+			continue ;
+		}
+			
+		if (stat(file->path, &file_stat) == -1)
+			return perror("ft_ls");
+
+		total += file_stat.st_blocks / 2;
+		file = file->next;
+	}
+	ft_putstr_fd("total ", 1);
+	ft_putnbr_fd(total, 1);
+	ft_putchar_fd('\n', 1);
+}
+
 void	print_files(t_ctx *ctx, t_file *file)
 {
 	if (!file->is_dir)
@@ -132,6 +157,8 @@ void	print_files(t_ctx *ctx, t_file *file)
 		ft_putstr_fd(file->path, 1);
 		ft_putendl_fd(":", 1);
 	}
+	if (ctx->flags.l_flag)
+		print_total_size(ctx, file);
 	file = file->dir;
 	while (file)
 	{
