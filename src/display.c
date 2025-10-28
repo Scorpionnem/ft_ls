@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:52 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 12:42:00 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 12:44:23 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ static void	print_file_long(t_ctx *ctx, t_file *file)
 	if (stat(file->path, &file_stat) == -1)
 		return perror("ft_ls");
 
-	char	*time_string = ctime(&file_stat.st_ctime);
-	time_string[16] = 0;
+	char	*time_string = ctime(&file_stat.st_ctime) + 4;
+	time_string[12] = 0;
 
 	struct passwd *passwd = getpwuid(file_stat.st_uid);
 	if (!passwd)
