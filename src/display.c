@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:52 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 14:38:13 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 14:40:29 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,8 @@ void	print_files(t_ctx *ctx, t_file *file)
 	if (!file->is_dir)
 	{
 		print_file(ctx, file);
-		ft_putchar_fd('\n', 1);	
+		if (!ctx->flags.l_flag)
+			ft_putchar_fd('\n', 1);	
 		return ;
 	}
 
@@ -186,6 +187,6 @@ void	print_files(t_ctx *ctx, t_file *file)
 		print_file(ctx, file);
 		file = file->next;
 	}
-	if (has_visible_after(ctx, dir))
+	if (!ctx->flags.l_flag && has_visible_after(ctx, dir))
 		ft_putchar_fd('\n', 1);
 }
