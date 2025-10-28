@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:52 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 09:24:06 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 09:44:21 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static void	print_file_long(t_ctx *ctx, t_file *file)
 		return perror("ft_ls");
 
 	print_mode(file_stat.st_mode);
-	printf("%lu %lu %s %s %ld %s %s\n", file_stat.st_blocks, file_stat.st_nlink, passwd->pw_name, group->gr_name, file_stat.st_size, time_string, file->name);
+	printf("%lu %s %s %ld %s %s\n", file_stat.st_nlink, passwd->pw_name, group->gr_name, file_stat.st_size, time_string, file->name);
 }
 
 static void	print_file(t_ctx *ctx, t_file *file)
