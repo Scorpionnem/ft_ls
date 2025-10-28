@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:52 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/27 14:02:50 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 08:51:05 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static void	print_file(t_ctx *ctx, t_file *file, bool space)
 		return ;
 	if (!ctx->flags.l_flag)
 	{
-		printf("%s", file->name);
+		ft_putstr_fd(file->name, 1);
 		if (space)
-			printf(" ");
+			ft_putchar_fd(' ', 1);
 	}
 	else
 	{
@@ -46,13 +46,14 @@ static void	print_file(t_ctx *ctx, t_file *file, bool space)
 
 void	print_files(t_ctx *ctx, t_file *file)
 {
-	t_file	*tmp = file->dir;
-
 	if (!file->is_dir)
 		return print_file(ctx, file, file->next);
 
 	if (ctx->flags.R_flag)
-		printf("%s:\n", file->path);
+	{
+		ft_putstr_fd(file->path, 1);
+		ft_putendl_fd(":", 1);
+	}
 	file = file->dir;
 	while (file)
 	{
@@ -60,18 +61,5 @@ void	print_files(t_ctx *ctx, t_file *file)
 		file = file->next;
 	}
 	if (!ctx->flags.l_flag)
-		printf("\n");
-
-	if (ctx->flags.R_flag)
-	{
-		while (tmp)
-		{
-			if (tmp->is_dir && (!tmp->is_hidden || (ctx->flags.a_flag && should_access_dir(tmp->name))))
-			{
-				// printf("\n");
-				// print_files(ctx, tmp);
-			}
-			tmp = tmp->next;
-		}
-	}
+		ft_putchar_fd('\n', 1);
 }

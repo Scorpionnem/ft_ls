@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:44:15 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/27 17:57:51 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 08:51:43 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,16 @@
 
 int	list_files_pipeline(t_ctx *ctx, t_file *file)
 {
+	t_file	*tmp;
+
 	if (!get_files(file, &file->dir))
 		return (0);
-		
 	if (!ctx->flags.t_flag)
 		sort_files_name(&file, ctx->flags.r_flag);
 	else
 		sort_files_time(&file, ctx->flags.r_flag);
-
 	print_files(ctx, file);
-
-	t_file	*tmp = file->dir;
+	tmp = file->dir;
 	while (tmp)
 	{
 		if (ctx->flags.R_flag && tmp->is_dir && should_access_dir(tmp->name)
@@ -43,9 +42,8 @@ int	list_files(t_ctx *ctx, char *path)
 	t_file	*file = files_new(path, NULL);
 	if (!file)
 		return (0);
-
-	list_files_pipeline(ctx, file);
-
+	if (!list_files_pipeline(ctx, file))
+		return (0);
 	files_free(file);
 	return (1);
 }

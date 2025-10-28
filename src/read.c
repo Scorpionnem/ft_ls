@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:31:38 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/27 14:04:25 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 08:51:40 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ int	get_files(t_file *parent, t_file **parent_dir)
 	{
 		if (errno == ENOTDIR)
 			return (1);
+		ft_putstr_fd("ft_ls: cannot open directory '", 2);
+		ft_putstr_fd(parent->path, 2);
+		ft_putstr_fd("': ", 2);
 		perror("");
 		return (0);
 	}
