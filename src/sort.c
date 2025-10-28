@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:37 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/27 10:29:11 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 09:22:18 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,17 @@ int	sort_files_name(t_file **files, bool reverse)
 		return (1);
 	while (tmp)
 	{
+		if (tmp->is_dir)
+			sort_files_name(&tmp, reverse);
 		if (tmp->next)
+		{
 			if ((!reverse && ft_strcmp(tmp->name, tmp->next->name) > 0) || (reverse && ft_strcmp(tmp->name, tmp->next->name) < 0))
 			{
 				swap_files(tmp, tmp->next);
 				tmp = first;
+				continue ;
 			}
-		if (tmp->is_dir)
-			sort_files_name(&tmp, reverse);
+		}
 		tmp = tmp->next;
 	}
 	return (1);
@@ -64,14 +67,17 @@ int	sort_files_time(t_file **files, bool reverse)
 		return (1);
 	while (tmp)
 	{
+		if (tmp->is_dir)
+			sort_files_name(&tmp, reverse);
 		if (tmp->next)
+		{
 			if ((!reverse && ft_strcmp(tmp->name, tmp->next->name) > 0) || (reverse && ft_strcmp(tmp->name, tmp->next->name) < 0))
 			{
 				swap_files(tmp, tmp->next);
 				tmp = first;
+				continue ;
 			}
-		if (tmp->is_dir)
-			sort_files_name(&tmp, reverse);
+		}
 		tmp = tmp->next;
 	}
 	return (1);
