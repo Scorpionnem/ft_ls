@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:44:15 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 13:44:33 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 14:22:36 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	main(int ac, char **av)
 	{
 		if (!list_files(&ctx, arg->content))
 			break ;
+		if (arg->next)
+			ft_putchar_fd('\n', 1);
 		arg = arg->next;
 	}
 	return (ctx_delete(&ctx));

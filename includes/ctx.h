@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:54:55 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/27 14:04:30 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 14:24:51 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_ctx
 	t_flags	flags;
 	t_list	*args;
 	t_file	*files;
+	bool	mult_args;
 }	t_ctx;
 
 int		ctx_init(t_ctx *ctx, char **av);
@@ -81,6 +82,7 @@ void	empty_del(void *ptr);
 
 int		sort_files_name(t_file **files, bool reverse);
 int		sort_files_time(t_file **files, bool reverse);
+int		sort_args_name(t_list **args);
 
 int		ctx_delete(t_ctx *ctx);
 

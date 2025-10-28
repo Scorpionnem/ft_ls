@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:52 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 14:16:15 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 14:21:16 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void	print_files(t_ctx *ctx, t_file *file)
 	if (!file->is_dir)
 		return print_file(ctx, file);
 
-	if (ctx->flags.R_flag)
+	if (ctx->flags.R_flag || ctx->mult_args)
 	{
 		ft_putstr_fd(file->path, 1);
 		ft_putendl_fd(":", 1);

@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:37 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 13:42:46 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/10/28 14:24:44 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,36 @@ int	sort_files_name(t_file **files, bool reverse)
 			if ((!reverse && ft_strcmp(tmp->name, tmp->next->name) > 0) || (reverse && ft_strcmp(tmp->name, tmp->next->name) < 0))
 			{
 				swap_files(tmp, tmp->next);
+				tmp = first;
+				continue ;
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
+static void	swap_args(t_list *arg1, t_list *arg2)
+{
+	char	*tmp = arg1->content;
+	arg1->content = arg2->content;
+	arg2->content = tmp;
+}
+
+int	sort_args_name(t_list **args)
+{
+	t_list	*first = *args;
+	t_list	*tmp = first;
+
+	if (!tmp)
+		return (1);
+	while (tmp)
+	{
+		if (tmp->next)
+		{
+			if (ft_strcmp(tmp->content, tmp->next->content) > 0)
+			{
+				swap_args(tmp, tmp->next);
 				tmp = first;
 				continue ;
 			}
