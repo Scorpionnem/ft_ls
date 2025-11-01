@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:52 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 14:40:29 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/11/01 14:11:38 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	print_file_long(t_file *file)
 {
 	struct stat	file_stat;
 
-	if (stat(file->path, &file_stat) == -1)
+	if (lstat(file->path, &file_stat) == -1)
 		return perror("ft_ls");
 
 	char	*time_string = ctime(&file_stat.st_ctime) + 4;
@@ -92,6 +92,9 @@ static void	print_file_long(t_file *file)
 	struct group *group = getgrgid(file_stat.st_gid);
 	if (!group)
 		return perror("ft_ls");
+
+	char	link_target[PATH_MAX + 1];
+	ssize_t	link_len;
 
 	print_mode(file_stat.st_mode);
 	ft_putnbr_fd(file_stat.st_nlink, 1);
@@ -105,6 +108,18 @@ static void	print_file_long(t_file *file)
 	ft_putstr_fd(time_string, 1);
 	ft_putchar_fd(' ', 1);
 	ft_putstr_fd(file->name, 1);
+	
+	if (S_ISLNK(file_stat.st_mode))
+	{
+		link_len = readlink(file->path, link_target, sizeof(link_target) - 1);
+		if (link_len != -1)
+		{
+			link_target[link_len] = '\0';
+			ft_putstr_fd(" -> ", 1);
+			ft_putstr_fd(link_target, 1);
+		}
+	}
+
 	ft_putchar_fd('\n', 1);
 }
 
@@ -152,7 +167,7 @@ static void	print_total_size(t_ctx *ctx, t_file *file)
 			continue ;
 		}
 			
-		if (stat(file->path, &file_stat) == -1)
+		if (lstat(file->path, &file_stat) == -1)
 			return perror("ft_ls");
 
 		total += file_stat.st_blocks / 2;
