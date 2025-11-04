@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:37 by mbatty            #+#    #+#             */
-/*   Updated: 2025/11/04 09:27:53 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/11/04 10:09:49 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ int	sort_args_name(t_list **args)
 	t_list	*first = *args;
 	t_list	*tmp = first;
 
+	struct stat	file_stat1;
+	struct stat	file_stat2;
 	if (!tmp)
 		return (1);
 	while (tmp)
@@ -77,6 +79,24 @@ int	sort_args_name(t_list **args)
 		if (tmp->next)
 		{
 			if (ft_strcmp(tmp->content, tmp->next->content) > 0)
+			{
+				swap_args(tmp, tmp->next);
+				tmp = first;
+				continue ;
+			}
+		}
+		tmp = tmp->next;
+	}
+	tmp = first;
+	while (tmp)
+	{
+		if (tmp->next)
+		{
+			if (lstat(tmp->content, &file_stat1) == -1)
+				return (perror("ft_ls"), 0);
+			if (lstat(tmp->next->content, &file_stat2) == -1)
+				return (perror("ft_ls"), 0);
+			if ((S_ISDIR(file_stat1.st_mode) && !S_ISDIR(file_stat2.st_mode)))
 			{
 				swap_args(tmp, tmp->next);
 				tmp = first;
