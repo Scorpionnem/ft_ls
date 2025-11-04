@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:37 by mbatty            #+#    #+#             */
-/*   Updated: 2025/11/04 09:24:00 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/11/04 09:27:53 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,9 @@ int	sort_files_time(t_file **files, bool reverse)
 			sort_files_time(&tmp, reverse);
 		if (tmp->next)
 		{
-			if (stat(tmp->path, &file_stat1) == -1)
+			if (lstat(tmp->path, &file_stat1) == -1)
 				return (perror("ft_ls"), 0);
-			if (stat(tmp->next->path, &file_stat2) == -1)
+			if (lstat(tmp->next->path, &file_stat2) == -1)
 				return (perror("ft_ls"), 0);
 			t1 = file_stat1.st_mtim;
 			t2 = file_stat2.st_mtim;
