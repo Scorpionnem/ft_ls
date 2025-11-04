@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:54:55 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 14:24:51 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/11/04 10:14:33 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	empty_del(void *ptr);
 
 int		sort_files_name(t_file **files, bool reverse);
 int		sort_files_time(t_file **files, bool reverse);
-int		sort_args_name(t_list **args);
+int		sort_args_name(t_ctx *ctx, t_list **args);
 
 int		ctx_delete(t_ctx *ctx);
 

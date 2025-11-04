@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 09:00:21 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 14:25:21 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/11/04 10:14:39 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		ctx_init(t_ctx *ctx, char **av)
 	if (!ctx_parse_args(ctx, av))
 		return (0);
 	ctx->mult_args = ft_lstsize(ctx->args) > 1;
-	sort_args_name(&ctx->args);
+	sort_args_name(ctx, &ctx->args);
 	return (1);
 }
 

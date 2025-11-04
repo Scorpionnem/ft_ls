@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:37 by mbatty            #+#    #+#             */
-/*   Updated: 2025/11/04 10:09:49 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/11/04 10:15:21 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,28 +65,13 @@ static void	swap_args(t_list *arg1, t_list *arg2)
 	arg2->content = tmp;
 }
 
-int	sort_args_name(t_list **args)
+int	sort_args_type(t_list **args)
 {
 	t_list	*first = *args;
 	t_list	*tmp = first;
-
 	struct stat	file_stat1;
 	struct stat	file_stat2;
-	if (!tmp)
-		return (1);
-	while (tmp)
-	{
-		if (tmp->next)
-		{
-			if (ft_strcmp(tmp->content, tmp->next->content) > 0)
-			{
-				swap_args(tmp, tmp->next);
-				tmp = first;
-				continue ;
-			}
-		}
-		tmp = tmp->next;
-	}
+
 	tmp = first;
 	while (tmp)
 	{
@@ -105,6 +90,65 @@ int	sort_args_name(t_list **args)
 		}
 		tmp = tmp->next;
 	}
+	return (1);
+}
+
+int	sort_args_time(t_list **args, bool reverse)
+{
+	t_list	*first = *args;
+	t_list	*tmp = first;
+	struct stat	file_stat1;
+	struct stat	file_stat2;
+	struct timespec t1;
+	struct timespec t2;
+
+	tmp = first;
+	while (tmp)
+	{
+		if (tmp->next)
+		{
+			if (lstat(tmp->content, &file_stat1) == -1)
+				return (perror("ft_ls"), 0);
+			if (lstat(tmp->next->content, &file_stat2) == -1)
+				return (perror("ft_ls"), 0);
+			t1 = file_stat1.st_mtim;
+			t2 = file_stat2.st_mtim;
+			if ((!reverse && (t1.tv_sec < t2.tv_sec || (t1.tv_sec == t2.tv_sec && t1.tv_nsec < t2.tv_nsec) || (t1.tv_sec == t2.tv_sec && t1.tv_nsec == t2.tv_nsec && ft_strcmp(tmp->content, tmp->next->content) > 0))) || (reverse && (t1.tv_sec > t2.tv_sec || (t1.tv_sec == t2.tv_sec && t1.tv_nsec > t2.tv_nsec) || (t1.tv_sec == t2.tv_sec && t1.tv_nsec == t2.tv_nsec && ft_strcmp(tmp->content, tmp->next->content) < 0))))
+			{
+				swap_args(tmp, tmp->next);
+				tmp = first;
+				continue ;
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
+int	sort_args_name(t_ctx *ctx, t_list **args)
+{
+	t_list	*first = *args;
+	t_list	*tmp = first;
+
+	if (!tmp)
+		return (1);
+	while (tmp)
+	{
+		if (tmp->next)
+		{
+			if (ft_strcmp(tmp->content, tmp->next->content) > 0)
+			{
+				swap_args(tmp, tmp->next);
+				tmp = first;
+				continue ;
+			}
+		}
+		tmp = tmp->next;
+	}
+	if (ctx->flags.t_flag && !sort_args_time(args, ctx->flags.r_flag))
+		return (0);
+	if (!sort_args_type(args))
+		return (0);
 	return (1);
 }
 
