@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:37 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 14:24:44 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/11/04 09:24:00 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	sort_files_time(t_file **files, bool reverse)
 				return (perror("ft_ls"), 0);
 			t1 = file_stat1.st_mtim;
 			t2 = file_stat2.st_mtim;
-			if ((!reverse && (t1.tv_sec < t2.tv_sec || (t1.tv_sec == t2.tv_sec && t1.tv_nsec < t2.tv_nsec) || (t1.tv_sec == t2.tv_sec && t1.tv_nsec == t2.tv_nsec && ft_strcmp(tmp->name, tmp->next->name) > 0))) || (reverse && (t1.tv_sec > t2.tv_sec || (t1.tv_sec == t2.tv_sec && t1.tv_nsec > t2.tv_nsec) || (t1.tv_sec == t2.tv_sec && t1.tv_nsec == t2.tv_nsec && ft_strcmp(tmp->name, tmp->next->name) > 0))))
+			if ((!reverse && (t1.tv_sec < t2.tv_sec || (t1.tv_sec == t2.tv_sec && t1.tv_nsec < t2.tv_nsec) || (t1.tv_sec == t2.tv_sec && t1.tv_nsec == t2.tv_nsec && ft_strcmp(tmp->name, tmp->next->name) > 0))) || (reverse && (t1.tv_sec > t2.tv_sec || (t1.tv_sec == t2.tv_sec && t1.tv_nsec > t2.tv_nsec) || (t1.tv_sec == t2.tv_sec && t1.tv_nsec == t2.tv_nsec && ft_strcmp(tmp->name, tmp->next->name) < 0))))
 			{
 				swap_files(tmp, tmp->next);
 				tmp = first;
