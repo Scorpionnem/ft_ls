@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:42:37 by mbatty            #+#    #+#             */
-/*   Updated: 2025/11/04 10:15:21 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/11/10 16:11:36 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ int	sort_args_name(t_ctx *ctx, t_list **args)
 	{
 		if (tmp->next)
 		{
-			if (ft_strcmp(tmp->content, tmp->next->content) > 0)
+			if ((!ctx->flags.r_flag && ft_strcmp(tmp->content, tmp->next->content) > 0) || (ctx->flags.r_flag && ft_strcmp(tmp->content, tmp->next->content) < 0))
 			{
 				swap_args(tmp, tmp->next);
 				tmp = first;
