@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:31:38 by mbatty            #+#    #+#             */
-/*   Updated: 2025/10/28 14:30:51 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/11/12 08:52:12 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	get_files(t_file *parent, t_file **parent_dir)
 		if (dirent)
 		{
 			new = files_new(dirent->d_name, parent->path);
+			if (!new)
+				return (0);
 			files_add_back(parent_dir, new);
 		}
 	}
