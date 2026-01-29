@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 09:31:38 by mbatty            #+#    #+#             */
-/*   Updated: 2025/11/12 08:52:12 by mbatty           ###   ########.fr       */
+/*   Updated: 2026/01/29 14:09:36 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,16 @@ int	get_files(t_file *parent, t_file **parent_dir)
 	struct dirent	*dirent;
 	t_file			*new;
 
+	struct stat	file_stat;
+
+	lstat(parent->path, &file_stat);
+	if (!S_ISDIR(file_stat.st_mode))
+		return (1);
+
 	dirent = NULL;
 	dir = opendir(parent->path);
 	if (!dir)
 	{
-		if (errno == ENOTDIR)
-			return (1);
 		ft_putstr_fd("ft_ls: cannot open directory '", 2);
 		ft_putstr_fd(parent->path, 2);
 		ft_putstr_fd("': ", 2);
