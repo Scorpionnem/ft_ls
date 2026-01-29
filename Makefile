@@ -24,12 +24,15 @@ DEPS = $(SRCS:%.c=$(OBJDIR)/%.d)
 
 LIBFT = ./libft/libft.a
 
-all: $(LIBFT) $(NAME)
+all: $(LIBFT)
+	@make -j compile --no-print-directory
+
+compile: $(NAME)
 
 re: fclean all
 
 $(LIBFT):
-	@make -C ./libft bonus --no-print-directory
+	@make -C ./libft all --no-print-directory
 
 $(NAME): $(OBJS)
 	@echo Compiling $(NAME)
